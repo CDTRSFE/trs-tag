@@ -9,16 +9,17 @@
   "author": "hjb2722404",
   "license": "ISC",
   "bin": {
-    "gen": "bin/cli.js"
+    "trs": "bin/cli.js"
   },
   "dependencies": {
+    "arg": "^5.0.0",
     "commander": "^5.1.0",
     "cosmiconfig": "^7.0.0",
-    "cp-file": "^9.0.0",
     "graceful-fs": "^4.2.4",
     "make-dir": "^3.1.0",
     "nested-error-stacks": "^2.1.0",
-    "p-event": "^4.2.0"
+    "p-event": "^4.2.0",
+    "shelljs": "^0.8.4"
   },
   "devDependencies": {
     "ava": "^3.9.0",
