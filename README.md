@@ -7,19 +7,32 @@
 ```
 $ npm install trs-tag -g
 
+```
+
 ## 使用方法
 
 ### 更新版本号
 
 ```
-$ gen sidebar doc
+$ trs ver --type=updateType      
 ```
+
+`updateType`: 版本更新类型
+
+* `patch`: 小版本更新（默认）
+* `minor`: 中版本更新
+* `major`: 大版本更新
+* `x.x.x`：自定义版本号，如 `1.1.1`
 
 ### 打tag
 
 ```
-$ gen log doc
+$ trs tag --env=envType --msg=tagMessage --ver=version
 ```
+
+* `envType`: 环境类型，需要在配置文件中配置类型及相应tag前缀,默认为‘dev’
+* `tagMessage`：`tag`描述信息, 默认为`tag`名称
+* `version： x.x.x`：自定义tag版本号，如 `1.1.1`， 默认为`package.json`中的`version`字段值
 
 #### 配置日志文件与格式
 
@@ -34,9 +47,8 @@ $ gen log doc
 
 ##### 配置项
 
-* `versionSrc`: 数组，日志文件源文件列表，每一个成员对象有以下属性：
-  * `fileName`: 文件名
-  * `versionReg`: 版本名称匹配符，程序最终会使用 `/^versionReg\s+/gi` 正则来匹配日志文件中的版本名称
-  * `dateReg`: 日期正则，程序最终会使用 `/dateReg/gi` 来匹配日志文件中的日期标题
+  * `dev`: 开发环境tag前缀
+  * `test`: 测试环境tag前缀
+  * `prod`: 正式环境tag前缀
+  * 其它自定义环境tag前缀
 
-* `versionTarget` : 最终生成的版本细览页名称，要求以`.html`  扩展格式结尾
