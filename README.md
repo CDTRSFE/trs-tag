@@ -24,7 +24,7 @@ $ trs ver --type=updateType
 * `major`: 大版本更新
 * `x.x.x`：自定义版本号，如 `1.1.1`
 
-### 打tag
+### 打tag并推送到远程仓库（origin）
 
 ```
 $ trs tag --env=envType --msg=tagMessage --ver=version
