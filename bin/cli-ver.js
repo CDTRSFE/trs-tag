@@ -1,6 +1,5 @@
 var shell = require('shelljs');
 const arg = require('arg');
-
 const args = arg({
     '--help': Boolean,
     '--type': String,
@@ -24,4 +23,13 @@ shell.echo('update package.json.version');
 
 let targetVersion = args['--type'] || 'patch';
 
-shell.exec(`npm version ${targetVersion}`);
+var r = shell.exec(`npm version ${targetVersion}`);
+if (r.code === 0) {
+    var cbDataPackage = require('../lib//util/read-package-json.js')
+    let version = _getPackageVersion();
+    shell.exec(`git tag -d v${version}`);
+}
+
+function _getPackageVersion() {
+    return cbDataPackage.version
+  }

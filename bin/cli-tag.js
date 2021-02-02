@@ -25,11 +25,15 @@ if (args['--help']) {
 }
 
 explorer.search().then( result => {
+    if (!result) {
+        shell.echo('对不起，没有trs-tag的配置文件');
+        return;
+    }
     config = result.config;
     let envKey = args['--env'] || 'dev';
     tagPrefix = config[envKey];
     let tagMessage = args['--msg'] || `${tagPrefix + version}`;
-    let version = args['--msg'] || _getPackageVersion();
+    let version = args['--ver'] || _getPackageVersion();
     var r = shell.exec(`git tag -a ${tagPrefix + version} -m ${tagMessage}`);
     if (r.code === 0) {
         console.log(`成功创建tag： ${tagPrefix + version}`);
