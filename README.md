@@ -27,12 +27,14 @@ $ trs ver --type=updateType
 ### 打tag并推送到远程仓库（origin）
 
 ```
-$ trs tag --env=envType --msg=tagMessage --ver=version
+$ trs tag --env=envType --msg=tagMessage --ver=version --push --remote=origin
 ```
 
 * `envType`: 环境类型，需要在配置文件中配置类型及相应tag前缀,默认为‘dev’
 * `tagMessage`：`tag`描述信息, 默认为`tag`名称
 * `version： x.x.x`：自定义tag版本号，如 `1.1.1`， 默认为`package.json`中的`version`字段值
+* `--push`: 是否推送远程，如不需要，可不传
+* `origin`: 推送到的远程仓库名称，默认值为 origin
 
 #### 配置日志文件与格式
 
