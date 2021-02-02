@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hjb2722404/trs-tag.git"
+  },
   "author": "hjb2722404",
   "license": "ISC",
   "bin": {
