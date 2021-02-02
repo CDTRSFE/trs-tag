@@ -1,6 +1,6 @@
 {
   "name": "trs-tag",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "a generate for docsify to auto generator some files",
   "main": "index.js",
   "scripts": {
