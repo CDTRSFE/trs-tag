@@ -25,7 +25,7 @@ let targetVersion = args['--type'] || 'patch';
 
 var r = shell.exec(`npm version ${targetVersion}`);
 if (r.code === 0) {
-    var cbDataPackage = require('../lib//util/read-package-json.js')
+    var cbDataPackage = require('../lib/util/read-package-json.js')
     let version = _getPackageVersion();
     shell.exec(`git tag -d v${version}`);
 }

@@ -13,7 +13,7 @@
   "author": "hjb2722404",
   "license": "ISC",
   "bin": {
-    "trs": "bin/cli.js"
+    "trs": "bin/trs.js"
   },
   "dependencies": {
     "arg": "^5.0.0",
@@ -38,7 +38,5 @@
     "uuid": "^8.1.0",
     "xo": "^0.32.0"
   },
-  "__npminstall_done": "Thu Sep 10 2020 10:57:31 GMT+0800 (GMT+08:00)",
-  "_from": "gen-cli-for-docsify@1.0.11",
-  "_resolved": "https://registry.npm.taobao.org/gen-cli-for-docsify/download/gen-cli-for-docsify-1.0.11.tgz"
+  "__npminstall_done": "Thu Sep 10 2020 10:57:31 GMT+0800 (GMT+08:00)"
 }

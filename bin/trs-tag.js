@@ -1,7 +1,7 @@
 var shell = require('shelljs');
 let cosmiconfig = require('cosmiconfig');
 let explorer = cosmiconfig.cosmiconfig('trs-tag');
-var cbDataPackage = require('../lib//util/read-package-json.js')
+var cbDataPackage = require('../lib/util/read-package-json.js')
 let config;
 let tagPrefix;
 const arg = require('arg');
