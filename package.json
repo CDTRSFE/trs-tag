@@ -20,6 +20,7 @@
     "commander": "^5.1.0",
     "cosmiconfig": "^7.0.0",
     "graceful-fs": "^4.2.4",
+    "inquirer": "^7.3.3",
     "make-dir": "^3.1.0",
     "nested-error-stacks": "^2.1.0",
     "p-event": "^4.2.0",
