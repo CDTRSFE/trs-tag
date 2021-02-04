@@ -7,5 +7,6 @@
     "beforeTag": "",
     "afterTag": "",
     "versionFilePath": [],
-    "versionFieldReg": ""
+    "versionFieldReg": "",
+    "versionCommitMsg": "全局版本号更新"
 }

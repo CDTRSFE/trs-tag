@@ -87,7 +87,7 @@ fs.access("./package.json",function(err){
                         shell.sed('-i',config.versionFieldReg, tagName, config.versionFilePath);
                         console.log('替换完毕，准备提交');
                         shell.exec(`git add .`, { silent: true});
-                        shell.exec(`git commit -m "全局版本号更新"`, { silent: true});
+                        shell.exec(`git commit -m "${config.versionCommitMsg}"`, { silent: true});
                         console.log('提交完毕');
                     }
                     return inquirer.prompt([

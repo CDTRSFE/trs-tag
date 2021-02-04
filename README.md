@@ -79,7 +79,8 @@ $ trs tag -s
     "beforeTag": "",
     "afterTag": "",
     "versionFilePath": [],
-    "versionFieldReg": ""
+    "versionFieldReg": "",
+    "versionCommitMsg": "全局版本号更新"
   }
 
 ```
@@ -92,5 +93,6 @@ $ trs tag -s
   * `afterTag`: 创建tag之后的钩子，可配置shell命令
   * `versionFilePath`: 需要全局替换版本标识的文件路径数组
   * `versionFieldReg`: 全局版本标识
+  * `versionCommitMsg`: 全局版本更新后的提交信息
  
 
