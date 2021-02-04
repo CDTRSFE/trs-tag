@@ -22,6 +22,7 @@ fs.access("./package.json",function(err){
                 return;
             }
             config = result.config;
+            const envs = config.envs;
             const arg = require('arg');
             const args = arg({
                 '--help': Boolean,
@@ -53,16 +54,14 @@ fs.access("./package.json",function(err){
             }
             if(args['-s']) {
                 var inquirer = require('inquirer');
-                let envList = Object.keys(config).filter((item) => { 
-                    return (item !== 'beforeTag' && item !== 'afterTag')
-                });
+                let envList = Object.keys(envs)
                 inquirer.prompt([ { 
                     type: 'list', 
                     name: 'env', 
                     message: '请选择要打tag的环境', 
                     choices: envList 
                 }]).then((answers) => {
-                    tagPrefix = config[answers.env];
+                    tagPrefix = envs[answers.env];
                     console.log('正在fetch远程仓库，请稍等...');
                     shell.exec(`git fetch`,{ silent:true});
                     let r = shell.exec(`git tag -l "${tagPrefix}*" --sort=-v:refname | head -n 1`, { silent: true });
@@ -77,6 +76,20 @@ fs.access("./package.json",function(err){
                     }])
                 }).then((answers) => { 
                     tagName  = tagPrefix + answers.version;
+                    if (config.versionFilePath.length) {
+                        console.log(config.versionFilePath);
+                        console.log('将替换以下文件中的全局版本号');
+                        for(let i = 0; i < config.versionFilePath.length; i++) {
+                            console.log(config.versionFilePath[i]);
+                        }
+                        console.log('全局版本替换标识为：', config.versionFieldReg);
+                        console.log('正在替换工程代码中的版本号,请稍等...');
+                        shell.sed('-i',config.versionFieldReg, tagName, config.versionFilePath);
+                        console.log('替换完毕，准备提交');
+                        shell.exec(`git add .`, { silent: true});
+                        shell.exec(`git commit -m "全局版本号更新"`, { silent: true});
+                        console.log('提交完毕');
+                    }
                     return inquirer.prompt([
                         {
                             type: 'input',
@@ -87,7 +100,7 @@ fs.access("./package.json",function(err){
                     ]);
                 }).then((answers) => {
                     let r = shell.exec(`git tag | grep "${tagName}"`);
-                    if (!r.code && r.stdout) {
+                    if (!r.code && r.stdout && r.stdout === tagName) {
                         return Promise.reject('该tag已经存在');
                     } else {
                         tagMessage = answers.tagMessage;
@@ -128,7 +141,7 @@ fs.access("./package.json",function(err){
                 });
             } else {
                 let envKey = args['--env'] || 'dev';
-                tagPrefix = config[envKey];
+                tagPrefix = envs[envKey];
                 tagName = tagPrefix + version;
                 tagMessage = args['--msg'] || `${tagName}`;
                 var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);

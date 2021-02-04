@@ -1,7 +1,11 @@
 {
-    "dev": "dev-v",
-    "test": "test-v",
-    "prod": "prod-v",
+    "envs" : {
+        "dev": "dev-v",
+        "test": "test-v",
+        "prod": "prod-v",
+    },
     "beforeTag": "",
     "afterTag": "",
+    "versionFilePath": [],
+    "versionFieldReg": ""
 }
