@@ -71,19 +71,26 @@ $ trs tag -s
 
 ```
    {
-    "dev": "dev-v", 
-    "test": "test-v",
-    "prod": "prod-v",
+    "envs" : {
+        "dev": "dev-v",
+        "test": "test-v",
+        "prod": "prod-v",
+    },
     "beforeTag": "",
-    "afterTag": ""
+    "afterTag": "",
+    "versionFilePath": [],
+    "versionFieldReg": ""
   }
 
 ```
-
-  * `dev`: 开发环境tag前缀
-  * `test`: 测试环境tag前缀
-  * `prod`: 正式环境tag前缀
+  * `envs`:
+    * `dev`: 开发环境tag前缀
+    * `test`: 测试环境tag前缀
+    * `prod`: 正式环境tag前缀
+    * 用户可添加其它自定义环境与前缀
   * `beforeTag`: 创建tag之前的钩子，可配置shell命令
   * `afterTag`: 创建tag之后的钩子，可配置shell命令
-  * 其它自定义环境tag前缀
+  * `versionFilePath`: 需要全局替换版本标识的文件路径数组
+  * `versionFieldReg`: 全局版本标识
+ 
 
