@@ -9,6 +9,13 @@ $ npm install trs-tag -g
 
 ```
 
+### 更新本工具
+
+```
+$ npm update trs-tag -g
+
+```
+
 ## 使用方法
 
 ### 更新版本号
@@ -36,9 +43,17 @@ $ trs tag --env=envType --msg=tagMessage --ver=version --push --remote=origin
 * `--push`: 是否推送远程，如不需要，可不传
 * `origin`: 推送到的远程仓库名称，默认值为 origin
 
-#### 配置日志文件与格式
+或者，您可以运行：
 
-支持从多个不同格式的日志文件生成统一的版本日志细览页。
+```
+$ trs tag -s
+```
+
+此命令将使用交互式命令完成以上各项操作。
+
+#### 配置文件与格式
+
+可预先配置不同环境的tag前缀
 
 ##### 配置支持：
 * `package.json` 中新增名为 `'trs-tag'` 的属性
@@ -48,6 +63,15 @@ $ trs tag --env=envType --msg=tagMessage --ver=version --push --remote=origin
 
 
 ##### 配置项
+
+```
+   {
+    "dev": "dev-v", 
+    "test": "test-v",
+    "prod": "prod-v"
+  }
+
+```
 
   * `dev`: 开发环境tag前缀
   * `test`: 测试环境tag前缀

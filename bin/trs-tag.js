@@ -14,6 +14,8 @@ fs.access("./package.json",function(err){
         let explorer = cosmiconfig.cosmiconfig('trs-tag');
         let config;
         let tagPrefix;
+        let tagName;
+        let tagMessage
         explorer.search().then( result => {
             if (!result) {
                 shell.echo('对不起，没有trs-tag的配置文件');
@@ -67,8 +69,9 @@ fs.access("./package.json",function(err){
                         }
                     ]);
                 }).then((answers) => {
-                    let tagName  = config[result.env] + result.version;
-                    var r = shell.exec(`git tag -a ${tagName} -m ${answers.tagMessage}`);
+                    tagName  = config[result.env] + result.version;
+                    tagMessage = answers.tagMessage
+                    var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);
                     if (r.code === 0) {
                         console.log(`成功创建tag： ${tagName}`);
                         return inquirer.prompt([{
@@ -87,19 +90,19 @@ fs.access("./package.json",function(err){
                         }]);
                     }
                 }).then((answers) => {
-                    let tagName  = config[result.env] + result.version;
                     shell.exec(`git push ${answers.remote} ${tagName}`);
                 });
             } else {
                 let envKey = args['--env'] || 'dev';
                 tagPrefix = config[envKey];
-                let tagMessage = args['--msg'] || `${tagPrefix + version}`;
-                var r = shell.exec(`git tag -a ${tagPrefix + version} -m ${tagMessage}`);
+                tagName = tagPrefix + version;
+                tagMessage = args['--msg'] || `${tagName}`;
+                var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);
                 if (r.code === 0) {
-                    console.log(`成功创建tag： ${tagPrefix + version}`);
+                    console.log(`成功创建tag： ${tagName}`);
                     if (args['--push']){
                         let remoteRepo = args['--remote'] || 'origin';
-                        shell.exec(`git push ${remoteRepo} ${tagPrefix + version}`);
+                        shell.exec(`git push ${remoteRepo} ${tagName}`);
                     }
                 }
             }
