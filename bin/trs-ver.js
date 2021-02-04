@@ -19,15 +19,21 @@ if (args['--help']) {
     return;
 }
 
-shell.echo('update package.json.version');
+shell.echo('正在更新版本号...');
 
 let targetVersion = args['--type'] || 'patch';
 
-var r = shell.exec(`npm version ${targetVersion}`);
+var r = shell.exec(`npm version ${targetVersion}`, { silent: true });
+
+if (r.stderr) {
+    console.log(r.stderr);
+}
+
 if (r.code === 0) {
+    console.log('版本号更新成功,当前版本', r.stdout);
     var cbDataPackage = require('../lib/util/read-package-json.js')
     let version = _getPackageVersion();
-    shell.exec(`git tag -d v${version}`);
+    shell.exec(`git tag -d v${version}`, { silent: true });
 }
 
 function _getPackageVersion() {

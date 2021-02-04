@@ -31,6 +31,11 @@ $ trs ver --type=updateType
 * `major`: 大版本更新
 * `x.x.x`：自定义版本号，如 `1.1.1`
 
+### 生成配置文件
+
+```
+$trs init
+```
 ### 打tag并推送到远程仓库（origin）
 
 ```
@@ -68,7 +73,9 @@ $ trs tag -s
    {
     "dev": "dev-v", 
     "test": "test-v",
-    "prod": "prod-v"
+    "prod": "prod-v",
+    "beforeTag": "",
+    "afterTag": ""
   }
 
 ```
@@ -76,5 +83,7 @@ $ trs tag -s
   * `dev`: 开发环境tag前缀
   * `test`: 测试环境tag前缀
   * `prod`: 正式环境tag前缀
+  * `beforeTag`: 创建tag之前的钩子，可配置shell命令
+  * `afterTag`: 创建tag之后的钩子，可配置shell命令
   * 其它自定义环境tag前缀
 

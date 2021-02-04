@@ -18,7 +18,7 @@ fs.access("./package.json",function(err){
         let tagMessage
         explorer.search().then( result => {
             if (!result) {
-                shell.echo('对不起，没有trs-tag的配置文件');
+                shell.echo('对不起，没有trs-tag的配置文件, 请尝试使用trs init 命令生成配置文件');
                 return;
             }
             config = result.config;
@@ -44,41 +44,71 @@ fs.access("./package.json",function(err){
                 `);
                 return;
             }
+            if (config.beforeTag) {
+                console.log('执行beforeTag钩子');
+                let r =shell.exec(`${config.beforeTag}`);
+                if (r.stderr) {
+                    console.log(r.stderr);
+                }
+            }
             if(args['-s']) {
                 var inquirer = require('inquirer');
-                let envList = Object.keys(config);
-                let result;
+                let envList = Object.keys(config).filter((item) => { 
+                    return (item !== 'beforeTag' && item !== 'afterTag')
+                });
                 inquirer.prompt([ { 
                     type: 'list', 
                     name: 'env', 
                     message: '请选择要打tag的环境', 
                     choices: envList 
-                }, {
-                    type: 'input',
-                    name: 'version',
-                    message: '请输入版本号',
-                    default: version
-                }]).then((answers) => { 
-                    result = Object.assign({}, answers);
+                }]).then((answers) => {
+                    tagPrefix = config[answers.env];
+                    console.log('正在fetch远程仓库，请稍等...');
+                    shell.exec(`git fetch`,{ silent:true});
+                    let r = shell.exec(`git tag -l "${tagPrefix}*" --sort=-v:refname | head -n 1`, { silent: true });
+                    if (!r.code && r.stdout) {
+                        console.log(`${answers.env} 环境的上一个tag是：${r.stdout}`);
+                    }
+                    return inquirer.prompt([{
+                        type: 'input',
+                        name: 'version',
+                        message: '请输入版本号',
+                        default: version
+                    }])
+                }).then((answers) => { 
+                    tagName  = tagPrefix + answers.version;
                     return inquirer.prompt([
                         {
                             type: 'input',
                             name: 'tagMessage',
                             message: '请输入tag描述信息',
-                            default: config[answers.env] + answers.version
+                            default: tagPrefix + answers.version
                         }
                     ]);
                 }).then((answers) => {
-                    tagName  = config[result.env] + result.version;
-                    tagMessage = answers.tagMessage
-                    var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);
-                    if (r.code === 0) {
-                        console.log(`成功创建tag： ${tagName}`);
-                        return inquirer.prompt([{
-                            type: 'confirm',
-                            name: 'isPush',
-                            message: '是否将tag推送到远程仓库？'
-                        }]);
+                    let r = shell.exec(`git tag | grep "${tagName}"`);
+                    if (!r.code && r.stdout) {
+                        return Promise.reject('该tag已经存在');
+                    } else {
+                        tagMessage = answers.tagMessage;
+                        let cr = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`,{ silent: true });
+                        if (!cr.code) {
+                            console.log(`成功创建tag： ${tagName}`);
+                            if (config.afterTag) {
+                                console.log('执行afterTag钩子');
+                                let r = shell.exec(`${config.afterTag}`);
+                                if (r.stderr) {
+                                    console.log(r.stderr);
+                                }
+                            }
+                            return inquirer.prompt([{
+                                type: 'confirm',
+                                name: 'isPush',
+                                message: '是否将tag推送到远程仓库？'
+                            }]);
+                        } else {
+                            return Promise.reject('创建tag出错');
+                        }
                     }
                 }).then((answers) => {
                     if (answers.isPush) {
@@ -87,10 +117,14 @@ fs.access("./package.json",function(err){
                             name: 'remote',
                             message: '请输入远程仓库名称',
                             default: 'origin'
-                        }]);
+                        }])
+                    } else {
+                        return Promise.reject('');
                     }
                 }).then((answers) => {
                     shell.exec(`git push ${answers.remote} ${tagName}`);
+                }).catch((err) => {
+                    console.log(err);
                 });
             } else {
                 let envKey = args['--env'] || 'dev';
@@ -100,6 +134,13 @@ fs.access("./package.json",function(err){
                 var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);
                 if (r.code === 0) {
                     console.log(`成功创建tag： ${tagName}`);
+                    if (config.afterTag) {
+                        console.log('执行afterTag钩子');
+                        let r = shell.exec(`${config.afterTag}`);
+                        if (r.stderr) {
+                            console.log(r.stderr);
+                        }
+                    }
                     if (args['--push']){
                         let remoteRepo = args['--remote'] || 'origin';
                         shell.exec(`git push ${remoteRepo} ${tagName}`);
