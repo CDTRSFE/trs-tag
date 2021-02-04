@@ -77,18 +77,7 @@ fs.access("./package.json",function(err){
                 }).then((answers) => { 
                     tagName  = tagPrefix + answers.version;
                     if (config.versionFilePath.length) {
-                        console.log(config.versionFilePath);
-                        console.log('将替换以下文件中的全局版本号');
-                        for(let i = 0; i < config.versionFilePath.length; i++) {
-                            console.log(config.versionFilePath[i]);
-                        }
-                        console.log('全局版本替换标识为：', config.versionFieldReg);
-                        console.log('正在替换工程代码中的版本号,请稍等...');
-                        shell.sed('-i',config.versionFieldReg, tagName, config.versionFilePath);
-                        console.log('替换完毕，准备提交');
-                        shell.exec(`git add .`, { silent: true});
-                        shell.exec(`git commit -m "${config.versionCommitMsg}"`, { silent: true});
-                        console.log('提交完毕');
+                        globalVersionReplace(config, tagName);
                     }
                     return inquirer.prompt([
                         {
@@ -144,6 +133,9 @@ fs.access("./package.json",function(err){
                 tagPrefix = envs[envKey];
                 tagName = tagPrefix + version;
                 tagMessage = args['--msg'] || `${tagName}`;
+                if (config.versionFilePath.length) {
+                    globalVersionReplace(config, tagName);
+                }
                 var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);
                 if (r.code === 0) {
                     console.log(`成功创建tag： ${tagName}`);
@@ -169,4 +161,26 @@ fs.access("./package.json",function(err){
 
 function _getPackageVersion() {
     return cbDataPackage ? cbDataPackage.version : null;
-  }
+}
+
+/**
+ * [globalVersionReplace 全局版本号替换]
+ *
+ * @param   {[type]}  config   [config description]
+ * @param   {[type]}  tagName  [tagName description]
+ *
+ * @return  {[type]}           [return description]
+ */
+function globalVersionReplace(config, tagName) {
+    console.log('将替换以下文件中的全局版本号');
+    for(let i = 0; i < config.versionFilePath.length; i++) {
+        console.log(config.versionFilePath[i]);
+    }
+    console.log('全局版本替换标识为：', config.versionFieldReg);
+    console.log('正在替换工程代码中的版本号,请稍等...');
+    shell.sed('-i',config.versionFieldReg, tagName, config.versionFilePath);
+    console.log('替换完毕，准备提交');
+    shell.exec(`git add .`, { silent: true});
+    shell.exec(`git commit -m "${config.versionCommitMsg}"`, { silent: true});
+    console.log('提交完毕');
+}
