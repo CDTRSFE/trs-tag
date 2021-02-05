@@ -9,7 +9,7 @@ const args = arg({
 
 if (args['--help']) {
     shell.echo(`
-        使用方法： trs ver --type=updateType
+        使用方法： gt ver --type=updateType
         updateType: 版本更新类型
             patch: 小版本更新（默认）
             minor: 中版本更新

@@ -36,7 +36,7 @@ fs.access("./package.json",function(err){
             });
             if (args['--help']) {
                 shell.echo(`
-                    使用方法： trs tag --env=envType --msg=tagMessage --ver=version --push --remote=origin 
+                    使用方法： gt tag --env=envType --msg=tagMessage --ver=version --push --remote=origin 
                     envType: 环境类型，需要在配置文件中配置类型及相应tag前缀,默认为‘dev’
                     tagMessage：tag描述信息, 默认为tag名称
                     version： x.x.x：自定义tag版本号，如 1.1.1， 默认为package.json中的version字段值

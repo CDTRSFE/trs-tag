@@ -2,6 +2,8 @@
 
 这是一个用来自动更新版本号|打tag|推送tag的命令行工具
 
+> 由于命令与其它工具命令有冲突，所有原trs调用的命令全部改为gt调用，其它配置不变
+
 ## 安装方法
 
 ```
@@ -21,7 +23,7 @@ $ npm update trs-tag -g
 ### 更新版本号
 
 ```
-$ trs ver --type=updateType      
+$ gt ver --type=updateType      
 ```
 
 `updateType`: 版本更新类型
@@ -34,12 +36,12 @@ $ trs ver --type=updateType
 ### 生成配置文件
 
 ```
-$trs init
+$gt init
 ```
 ### 打tag并推送到远程仓库（origin）
 
 ```
-$ trs tag --env=envType --msg=tagMessage --ver=version --push --remote=origin
+$ gt tag --env=envType --msg=tagMessage --ver=version --push --remote=origin
 ```
 
 * `envType`: 环境类型，需要在配置文件中配置类型及相应tag前缀,默认为‘dev’
@@ -51,7 +53,7 @@ $ trs tag --env=envType --msg=tagMessage --ver=version --push --remote=origin
 或者，您可以运行：
 
 ```
-$ trs tag -s
+$ gt tag -s
 ```
 
 此命令将使用交互式命令完成以上各项操作。
