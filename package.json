@@ -13,7 +13,7 @@
   "author": "hjb2722404",
   "license": "ISC",
   "bin": {
-    "trs": "bin/trs.js"
+    "gt": "bin/gt.js"
   },
   "dependencies": {
     "arg": "^5.0.0",
