@@ -1,7 +1,7 @@
 {
   "name": "trs-tag",
   "version": "1.0.12",
-  "description": "a generate for docsify to auto generator some files",
+  "description": "a tool for easy update package.version and create git tag / push git tag",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
