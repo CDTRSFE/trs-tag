@@ -19,7 +19,7 @@ fs.access("./package.json",function(err){
         let tagMessage
         explorer.search().then( result => {
             if (!result) {
-                shell.echo('对不起，没有trs-tag的配置文件, 请尝试使用trs init 命令生成配置文件');
+                shell.echo('对不起，没有trs-tag的配置文件, 请尝试使用gt init 命令生成配置文件');
                 return;
             }
             config = result.config;
