@@ -1,5 +1,6 @@
 var shell = require('shelljs');
 var fs = require('fs');
+const fp = require('../lib/util/fileReplace');
 fs.access("./package.json",function(err){
     if(err && err.code == "ENOENT"){
         console.log("未发现package.json文件，请尝试使用 npm init 命令创建")
@@ -18,7 +19,7 @@ fs.access("./package.json",function(err){
         let tagMessage
         explorer.search().then( result => {
             if (!result) {
-                shell.echo('对不起，没有trs-tag的配置文件, 请尝试使用trs init 命令生成配置文件');
+                shell.echo('对不起，没有trs-tag的配置文件, 请尝试使用gt init 命令生成配置文件');
                 return;
             }
             config = result.config;
@@ -76,7 +77,7 @@ fs.access("./package.json",function(err){
                     }])
                 }).then((answers) => { 
                     tagName  = tagPrefix + answers.version;
-                    if (config.versionFilePath.length) {
+                    if (config.versionFile.length) {
                         globalVersionReplace(config, tagName);
                     }
                     return inquirer.prompt([
@@ -98,7 +99,8 @@ fs.access("./package.json",function(err){
                             console.log(`成功创建tag： ${tagName}`);
                             if (config.afterTag) {
                                 console.log('执行afterTag钩子');
-                                let r = shell.exec(`${config.afterTag}`);
+                                const commend = config.afterTag.replace(/__VERSION__/,`'${tagName}'`);
+                                let r = shell.exec(`${commend}`);
                                 if (r.stderr) {
                                     console.log(r.stderr);
                                 }
@@ -133,7 +135,7 @@ fs.access("./package.json",function(err){
                 tagPrefix = envs[envKey];
                 tagName = tagPrefix + version;
                 tagMessage = args['--msg'] || `${tagName}`;
-                if (config.versionFilePath.length) {
+                if (config.versionFile.length) {
                     globalVersionReplace(config, tagName);
                 }
                 var r = shell.exec(`git tag -a ${tagName} -m ${tagMessage}`);
@@ -141,7 +143,8 @@ fs.access("./package.json",function(err){
                     console.log(`成功创建tag： ${tagName}`);
                     if (config.afterTag) {
                         console.log('执行afterTag钩子');
-                        let r = shell.exec(`${config.afterTag}`);
+                        const commend = config.afterTag.replace(/__VERSION__/,`'${tagName}'`);
+                        let r = shell.exec(`${commend}`);
                         if (r.stderr) {
                             console.log(r.stderr);
                         }
@@ -173,14 +176,16 @@ function _getPackageVersion() {
  */
 function globalVersionReplace(config, tagName) {
     console.log('将替换以下文件中的全局版本号');
-    for(let i = 0; i < config.versionFilePath.length; i++) {
-        console.log(config.versionFilePath[i]);
+    for(let i = 0; i < config.versionFile.length; i++) {
+        console.log('全局版本替换标识为：', config.versionFile[i].reg);
+        console.log('正在替换工程代码中的版本号,请稍等...');
+        // shell.sed('-i',config.versionFieldReg, tagName, config.versionFilePath);
+        fp.fileReplace(config.versionFile[i],tagName)
     }
-    console.log('全局版本替换标识为：', config.versionFieldReg);
-    console.log('正在替换工程代码中的版本号,请稍等...');
-    shell.sed('-i',config.versionFieldReg, tagName, config.versionFilePath);
     console.log('替换完毕，准备提交');
     shell.exec(`git add .`, { silent: true});
     shell.exec(`git commit -m "${config.versionCommitMsg}"`, { silent: true});
     console.log('提交完毕');
+   
 }
+

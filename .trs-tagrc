@@ -1,0 +1,17 @@
+{
+    "envs" : {
+        "dev": "dev-v",
+        "test": "test-v",
+        "prod": "prod-v",
+    },
+    "beforeTag": "",
+    "afterTag": "",
+    "versionFile": [
+        {
+            path:'',
+            reg:'',
+            replace:''
+        }
+    ],
+    "versionCommitMsg": "全局版本号更新"
+}
