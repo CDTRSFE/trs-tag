@@ -1,6 +1,6 @@
 {
   "name": "trs-tag",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "a tool for easy update package.version and create git tag / push git tag",
   "main": "index.js",
   "scripts": {
