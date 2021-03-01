@@ -91,7 +91,7 @@ $ gt githelp
           {
               "path":"public/app.config.js",
               "reg":"(version:\\s+)'[\\w\\.\\d-]+'",
-              "replace":"$1__VERSION__"
+              "replace":"$1'__VERSION__'"
           }
     ],
     "versionCommitMsg": "全局版本号更新"
@@ -112,5 +112,5 @@ $ gt githelp
     -   `reg`: 需要全局替换版本标识的正则匹配
         -   例=> `reg:"(version:\\s+)'[\\w\\.\\d-]+'"` 需要注意的是:`\s`等字符需要改成`\\s`，否则会报错`无效的转义字符`
     -   `replace`: 需要全局替换版本标识的正则替换格式
-        -   例=> `"replace":"$1__VERSION__"`， replace 中的`__VERSION__`会被替换成为生成的 tagName(版本号)，具体参考JS中的[replace()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replace)方法
+        -   例=> `"replace":"$1'__VERSION__'"`， replace 中的`__VERSION__`会被替换成为生成的 tagName(版本号)，具体参考JS中的[replace()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replace)方法
 -   `versionCommitMsg`: 全局版本更新后的提交信息
