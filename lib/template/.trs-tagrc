@@ -6,7 +6,12 @@
     },
     "beforeTag": "",
     "afterTag": "",
-    "versionFilePath": [],
-    "versionFieldReg": "",
+    "versionFile": [
+        {
+            path:'',
+            reg:'',
+            replace:''
+        }
+    ],
     "versionCommitMsg": "全局版本号更新"
 }
